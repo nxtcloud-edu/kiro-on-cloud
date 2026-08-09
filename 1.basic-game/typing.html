@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>수도 타자 연습</title>
+<style>
+  body {
+    font-family: system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif;
+    background: #F8FAFC; color: #0F172A; margin: 0;
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 24px;
+  }
+  h1 { font-size: 34px; margin: 0; }
+  .desc { color: #64748B; margin: 0; font-size: 17px; }
+  #word {
+    font-size: 72px; font-weight: 800; letter-spacing: 0.04em;
+    background: #FFFFFF; border-radius: 16px;
+    padding: 28px 64px; min-width: 380px; text-align: center;
+  }
+  input {
+    font-size: 30px; padding: 14px 20px; width: 380px; text-align: center;
+    border: 2px solid #CBD5E1; border-radius: 10px; outline: none;
+  }
+  input:focus { border-color: #0F172A; }
+  #message { font-size: 24px; font-weight: 700; margin: 0; height: 30px; }
+  #message.ok  { color: #15803D; }
+  #message.bad { color: #DB2777; }
+  #score { font-size: 20px; color: #64748B; margin: 0; }
+  #score b { font-size: 32px; color: #0F172A; }
+</style>
+</head>
+<body>
+
+<h1>수도 타자 연습</h1>
+<p class="desc">화면에 나온 수도 이름을 그대로 입력하고 엔터를 누르세요.</p>
+
+<div id="word">서울</div>
+<input id="input" type="text" autocomplete="off" placeholder="여기에 입력">
+<p id="message"></p>
+<p id="score">맞은 개수 <b id="count">0</b></p>
+
+<script>
+  const capitals = [
+    "서울", "도쿄", "베이징", "하노이", "방콕",
+    "마닐라", "자카르타", "뉴델리", "파리", "런던",
+    "베를린", "로마", "마드리드", "모스크바", "워싱턴",
+    "오타와", "캔버라", "리마", "카이로", "앙카라"
+  ];
+
+  const wordBox = document.getElementById("word");
+  const input = document.getElementById("input");
+  const message = document.getElementById("message");
+  const countText = document.getElementById("count");
+
+  let current = "";
+  let count = 0;
+
+  input.onkeydown = (e) => { if (e.key === "Enter") submit(); };
+
+  next();
+  input.focus();
+
+  function next() {
+    const index = Math.floor(Math.random() * capitals.length);
+    current = capitals[index];
+    wordBox.textContent = current;
+    input.value = "";
+  }
+
+  function submit() {
+    if (input.value === current) {
+      count = count + 1;
+      countText.textContent = count;
+      message.textContent = "정확합니다";
+      message.className = "ok";
+      next();
+    } else {
+      message.textContent = "다시 입력하세요";
+      message.className = "bad";
+      input.value = "";
+    }
+    input.focus();
+  }
+</script>
+
+</body>
+</html>

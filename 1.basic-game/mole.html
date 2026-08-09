@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>두더지 잡기</title>
+<style>
+  body {
+    font-family: system-ui, -apple-system, "Apple SD Gothic Neo", sans-serif;
+    background: #F8FAFC; color: #0F172A; margin: 0;
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 24px;
+  }
+  h1 { font-size: 34px; margin: 0; }
+  .desc { color: #64748B; margin: 0; font-size: 17px; }
+  #score { font-size: 44px; font-weight: 800; margin: 0; }
+  #grid {
+    display: grid; grid-template-columns: repeat(3, 130px);
+    grid-template-rows: repeat(3, 130px); gap: 14px;
+  }
+  .hole {
+    background: #E2E8F0; border-radius: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 56px; user-select: none;
+  }
+  .hole.mole { background: #FDE68A; }
+</style>
+</head>
+<body>
+
+<h1>두더지 잡기</h1>
+<p class="desc">노란 칸을 클릭하면 1점입니다.</p>
+
+<p id="score">0</p>
+<div id="grid"></div>
+
+<script>
+  const grid = document.getElementById("grid");
+  const scoreText = document.getElementById("score");
+
+  const holes = [];
+  let score = 0;
+  let molePos = 0;
+
+  // 3 x 3 = 9칸 만들기
+  for (let i = 0; i < 9; i++) {
+    const hole = document.createElement("div");
+    hole.className = "hole";
+    hole.onclick = () => hit(i);
+    grid.appendChild(hole);
+    holes.push(hole);
+  }
+
+  setInterval(move, 1000);   // 1초마다 두더지가 옮겨간다
+  move();
+
+  function move() {
+    holes[molePos].className = "hole";
+    holes[molePos].textContent = "";
+
+    molePos = Math.floor(Math.random() * 9);
+
+    holes[molePos].className = "hole mole";
+    holes[molePos].textContent = "🐹";
+  }
+
+  function hit(index) {
+    if (index !== molePos) return;   // 빈 칸을 눌러도 아무 일 없음
+    score = score + 1;
+    scoreText.textContent = score;
+    move();
+  }
+</script>
+
+</body>
+</html>
