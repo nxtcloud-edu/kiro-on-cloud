@@ -49,5 +49,15 @@ def get_text():
 @app.post("/api/text", status_code=201)
 def add_text(q: Quote):
     # TODO(KIRO): quotes 테이블에 INSERT. text 뒤에 " ...아마도..." 를 붙이세요.
+    #   INSERT 후 conn.commit() 을 꼭 호출해야 실제로 저장됩니다 (pymysql은 자동 커밋이 아님).
+    #   text나 username이 비어 있으면 400 {"error": "text와 username은 필수입니다"}.
     #   성공 시 {"message": "저장되었습니다 (이제 서버를 껐다 켜도 유지됩니다!)"}.
+    ...
+
+
+@app.get("/api/texts")
+def list_texts():
+    # TODO(KIRO): quotes 테이블 전체를 최신순(ORDER BY id DESC)으로 조회해
+    #   {"quotes": [{"text": ..., "username": ...}, ...], "total": <개수>} 로 반환하세요.
+    #   (화면의 "저장된 명언" 목록이 이 응답을 그대로 그린다)
     ...
