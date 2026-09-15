@@ -1,0 +1,403 @@
+/* ─────────────────────────────────────────────
+   방명록 — 오래된 카페 벽에 붙은 쪽지 느낌.
+   1-Tier와 3-Tier가 **같은 파일**을 쓴다.
+   화면을 S3로 옮겨도 보이는 것은 그대로라는 걸 눈으로 확인시키기 위함이다.
+   ───────────────────────────────────────────── */
+
+:root {
+  --serif: "Iowan Old Style", "Apple SD Gothic Neo", "Noto Serif KR", Georgia, serif;
+  --ink: #2A2118;
+  --muted: #6B5D4D;
+  --faint: #9A8B78;
+  --paper: #FBF6EC;
+  --card: #FFFDF8;
+  --line: #E4D9C6;
+  --accent: #B4581F;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 머리말 ───────────────────────────────── */
+.site-header {
+  border-bottom: 1px solid var(--line);
+  background: rgba(251, 246, 236, 0.92);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.header-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.wordmark {
+  font-size: 18px;
+  letter-spacing: 0.01em;
+}
+
+/* 지금 몇 겹짜리 구조인지 화면에 늘 띄워둔다 (1-Tier → 3-Tier 변화를 눈으로 본다) */
+.tier {
+  font-size: 12px;
+  color: var(--faint);
+  letter-spacing: 0.04em;
+}
+
+/* ── 본문 ─────────────────────────────────── */
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px 72px;
+}
+
+h1 {
+  font-size: 34px;
+  font-weight: 600;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.lead {
+  margin: 0 0 28px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* ── 주인장 공지 ──────────────────────────── */
+.notice {
+  border-left: 3px solid var(--accent);
+  background: #F6EEDF;
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+  margin-bottom: 28px;
+}
+
+.notice-label {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.notice-text {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+/* ── 카드·폼 ──────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 1px 2px rgba(42, 33, 24, 0.04);
+}
+
+.form {
+  margin-bottom: 40px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  margin-bottom: 6px;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #C2B5A2;
+}
+
+/* ── 별점 ─────────────────────────────────── */
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  background: none;
+  border: none;
+  padding: 0 2px;
+  font-size: 24px;
+  line-height: 1;
+  color: #DCCFB9;
+  cursor: pointer;
+  transition: color 0.12s ease, transform 0.12s ease;
+}
+
+.star.on {
+  color: #E0A33C;
+}
+
+.star:hover {
+  transform: translateY(-1px);
+}
+
+/* ── 스티커 고르기 ────────────────────────── */
+.picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-size: 20px;
+  line-height: 1;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.12s ease, transform 0.12s ease;
+}
+
+.chip.on {
+  border-color: var(--accent);
+  background: #FCF2E4;
+  transform: translateY(-1px);
+}
+
+/* ── 버튼 ─────────────────────────────────── */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 15px;
+  padding: 10px 20px;
+  color: #FFF9F0;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: opacity 0.12s ease;
+}
+
+.btn:hover {
+  opacity: 0.86;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.btn.ghost {
+  color: var(--ink);
+  background: transparent;
+  border-color: var(--line);
+}
+
+/* ── 목록 ─────────────────────────────────── */
+.list-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+  margin-bottom: 18px;
+}
+
+.list-head h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.count {
+  font-size: 13px;
+  color: var(--faint);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.entry {
+  display: flex;
+  gap: 14px;
+  padding: 18px 0;
+  border-bottom: 1px dashed var(--line);
+  animation: fadeUp 0.28s ease both;
+}
+
+.entry-sticker {
+  font-size: 24px;
+  line-height: 1.3;
+  flex: none;
+}
+
+.entry-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.entry-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.entry-nick {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.entry-rating {
+  font-size: 13px;
+  color: #E0A33C;
+  letter-spacing: 0.06em;
+}
+
+.entry-rating .dim {
+  color: #DCCFB9;
+}
+
+.entry-msg {
+  margin: 4px 0 0;
+  font-size: 15px;
+  color: var(--ink);
+  word-break: break-word;
+}
+
+/* 주인장 답글 — 손님 글 아래 한 칸 들여서 붙인다 */
+.entry-reply {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: #F6EEDF;
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.reply-label {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-right: 8px;
+}
+
+.list-empty {
+  color: var(--faint);
+  font-size: 14px;
+  padding: 24px 0;
+  margin: 0;
+}
+
+/* ── 알림 ─────────────────────────────────── */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #FFF9F0;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(42, 33, 24, 0.18);
+  animation: toastIn 0.2s ease both;
+  z-index: 10;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 20px 24px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (max-width: 640px) {
+  .app {
+    padding: 32px 18px 56px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .header-inner {
+    padding: 12px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
